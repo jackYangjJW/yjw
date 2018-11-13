@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+    <mapper namespace="com.yjw.dao.BookDao" >
+    <!-- 添加客户 -->
+	<insert id="createBook" parameterType="Book">
+	    insert into book(
+	                    bookname,
+	                     bookauthor,
+	                     bookclass,
+	                     bookdate,
+	                     bookpress
+	             )
+	             values(#{bookname},
+	                    #{bookauthor},
+	                    #{bookclass},
+	                    #{bookdate},
+	                     #{bookpress}
+	            )
+	</insert>
+	<!-- 根据id获取书籍信息 -->
+	<select id="getBookById" parameterType="Integer" resultType="Book">
+	    select * from book where bookid = #{bookid}
+	</select>
+	<!-- 更新客户 -->
+	<update id="updateBook" parameterType="Book">
+	    update book	
+	    <set>
+	        <if test="bookname !=null  and bookname !=''">
+	            bookname=#{bookname},
+	        </if>
+	        <if test="bookauthor !=null  and bookauthor !=''">
+	            bookauthor=#{bookauthor},
+	        </if>
+	        <if test="bookclass !=null  and bookclass !=''">
+	            bookclass=#{bookclass},
+	        </if>
+	        <if test="bookdate !=null  and bookdate !=''">
+	            bookdate=#{bookdate},
+	        </if>
+	         <if test="bookpress !=null  and bookpress !=''">
+	            bookpress=#{bookpress},
+	        </if>
+	    </set>
+	    where bookid=#{bookid}
+	</update>
+	<!-- 删除客户 -->
+	<delete id="deleteBook" parameterType="Integer">
+	    delete from book where bookid=#{bookid}
+	</delete>
+	<select id="list" resultType="Book">
+			select * from book
+		</select>
+		
+		<!-- 以名查找读者 -->
+		<select id="search" parameterType="list" resultType="Book">
+		select * from book 
+		 <where> 
+		<if test="bookname !=null and bookname !='' ">
+			 and bookname like concat('%',#{bookname},'%')
+		</if>
+		<if test="bookclass !=null and bookclass !='' ">
+			and	bookclass= #{bookclass}
+			</if>
+			</where>
+		</select>
+		
+    
+    
+    </mapper>

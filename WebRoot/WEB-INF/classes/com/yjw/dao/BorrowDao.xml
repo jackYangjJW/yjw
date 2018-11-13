@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+    <mapper namespace="com.yjw.dao.BorrowDao" >
+    	<select id="list" parameterType="list" resultType="Borrow">
+    		select * from borrow
+    	</select>
+    		<!-- 查找 -->
+		<select id="searchBorrow" parameterType="list" resultType="Borrow">
+		select * from borrow 
+		 <where> 
+		<if test="readername !=null and readername !='' ">
+			 and readername like concat('%',#{readername},'%')
+		</if>
+		<if test="bookname !=null and bookname !='' ">
+			and	bookname like concat('%',#{bookname},'%')
+			</if>
+			</where>
+		</select>
+		<!-- 获得读者借阅信息 -->
+		<select id="borrowReader" parameterType="list" resultType="Borrow">
+		select * from borrow where	readername= #{readername}
+		
+		</select>
+	    <!-- 添加 -->
+		<insert id="createBorrow" parameterType="Borrow">
+		    insert into borrow(
+
+		    				readername,
+		                     bookname,
+		                     borrowts
+		             )
+		             values(#{readername},
+		                    #{bookname},
+		                    #{borrowts}
+		            )
+		</insert>
+		<!-- 更新 -->
+	<update id="updateBorrow" parameterType="Borrow">
+	    update borrow
+	    <set>
+	        <if test="readername  and readername !=''">
+	            readername=#{readername},
+	        </if>
+	        <if test="bookname !=null  and bookname !=''">
+	            bookname=#{bookname},
+	        </if>
+	        <if test="borrowts !=null  and borrowts !=''">
+	            borrowts=#{borrowts},
+	        </if>
+	    </set>
+	    where borrowid=#{borrowid}
+	</update>
+		<!-- 删除 -->
+		<delete id="deleteBorrow" parameterType="Integer">
+	  		  delete from borrow where borrowid=#{borrowid}
+		</delete>
+			<!-- 根据name获取借阅信息 -->
+		<select id="getReaderByName" parameterType="String" resultType="Borrow">
+		    select * from borrow where readername = #{name}
+		</select>
+		<!-- 根据name获取借阅信息 -->
+		<select id="getReaderByID" parameterType="Integer" resultType="Borrow">
+		    select * from borrow where borrowid = #{id}
+		</select>
+    </mapper>

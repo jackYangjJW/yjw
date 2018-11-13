@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+    <mapper namespace="com.yjw.dao.ReaderDao" >
+    <!-- 登录 -->
+ 	<select id="findReader" resultType="Reader">
+	    select *
+	    from reader
+	    where readerid = #{readerid}
+	    and password =#{password}
+
+    </select>
+	<!-- 添加客户 -->
+	<insert id="createReader" parameterType="Reader">
+	    insert into reader(
+	                    name,
+	                     sex,
+	                     password,
+	                     phone,
+	                     dp
+	             )
+	             values(#{name},
+	                    #{sex},
+	                     #{password},
+	                    #{phone},
+	                    #{dp}
+	            )
+	</insert>
+	<!-- 根据id获取客户信息 -->
+	<select id="getReaderById" parameterType="Integer" resultType="Reader">
+	    select * from reader where readerid = #{readerid}
+	</select>
+	<!-- 更新客户 -->
+	<update id="updateReader" parameterType="Reader">
+	    update reader
+	    <set>
+	        <if test="name!=null  and name !=''">
+	            name=#{name},
+	        </if>
+	        <if test="sex !=null  and sex !=''">
+	            sex=#{sex},
+	        </if>
+	        <if test="password !=null  and password !=''">
+	            password=#{password},
+	        </if>
+	        <if test="phone !=null  and phone !=''">
+	            phone=#{phone},
+	        </if>
+	        <if test="dp !=null  and dp !=''">
+	            dp=#{dp},
+	        </if>
+	    </set>
+	    where readerid=#{readerid}
+	</update>
+	<!-- 删除客户 -->
+	<delete id="deleteReader" parameterType="Integer">
+	
+	    delete from reader where readerid=#{readerid}
+	  
+	
+	</delete>
+	<select id="list" resultType="Reader">
+			select * from reader
+		</select>
+		
+		<!-- 以名查找读者 -->
+		<select id="searchName" parameterType="String" resultType="Reader">
+		select * from reader where name like concat('%',#{name},'%')
+		</select>
+		
+	         
+</mapper>
